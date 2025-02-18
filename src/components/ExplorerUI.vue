@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted, provide } from 'vue'
 import { Folder as FolderIcon } from 'lucide-vue-next'
+import axios from 'axios'
 import FolderTree from './FolderTree.vue'
 import type { Folder } from '../types/folder'
-import { dummyFolderStructure } from '../data/dummyData'
+
+const API_BASE_URL = 'http://localhost:3000/api'
 
 const folderStructure = ref<Folder[]>([])
 const selectedFolder = ref<Folder | null>(null)
@@ -11,38 +13,38 @@ const selectedFolder = ref<Folder | null>(null)
 // Provide the selectedFolder to child components
 provide('selectedFolder', selectedFolder)
 
-// Simulate API call to fetch folder structure
+// Fetch folder structure from the backend
 const fetchFolderStructure = async (): Promise<Folder[]> => {
-  // Simulate network delay
-  await new Promise((resolve) => setTimeout(resolve, 500))
-  return dummyFolderStructure
+  try {
+    const response = await axios.get(`${API_BASE_URL}/folders`)
+    return response.data
+  } catch (error) {
+    console.error('Failed to fetch folder structure:', error)
+    throw error
+  }
 }
 
-// Simulate API call to fetch subfolders
+// Fetch subfolders from the backend
 const fetchSubfolders = async (folderId: number): Promise<Folder[]> => {
-  // Simulate network delay
-  await new Promise((resolve) => setTimeout(resolve, 300))
-
-  // Find the folder in the structure and return its subfolders
-  const findFolder = (folders: Folder[]): Folder | undefined => {
-    for (const folder of folders) {
-      if (folder.id === folderId) return folder
-      if (folder.subfolders) {
-        const found = findFolder(folder.subfolders)
-        if (found) return found
-      }
-    }
+  try {
+    const response = await axios.get(`${API_BASE_URL}/folders/${folderId}/subfolders`)
+    return response.data
+  } catch (error) {
+    console.error(`Failed to fetch subfolders for folder ${folderId}:`, error)
+    throw error
   }
-
-  const folder = findFolder(dummyFolderStructure)
-  return folder?.subfolders || []
 }
 
 const selectFolder = async (folder: Folder) => {
   selectedFolder.value = folder
   // Fetch subfolders when a folder is selected
   if (!folder.subfolders) {
-    folder.subfolders = await fetchSubfolders(folder.id)
+    try {
+      folder.subfolders = await fetchSubfolders(folder.id)
+    } catch (error) {
+      console.error(`Failed to fetch subfolders for folder ${folder.id}:`, error)
+      folder.subfolders = []
+    }
   }
 }
 
