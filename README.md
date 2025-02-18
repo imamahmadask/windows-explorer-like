@@ -1,39 +1,80 @@
-# window-explorer
+# Vue 3 Windows Explorer-like Interface
 
-This template should help get you started developing with Vue 3 in Vite.
+This project is a Windows Explorer-like interface built with Vue 3, providing a familiar and intuitive file/folder navigation experience in the browser.
 
-## Recommended IDE Setup
+## Features
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+- Tree view of folder structure
+- Folder navigation
+- Display of folder contents
+- Responsive design
+- Integration with backend API for folder data
 
-## Type Support for `.vue` Imports in TS
+## Prerequisites
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+Before you begin, ensure you have met the following requirements:
 
-## Customize configuration
+- Node.js (version 14.x or later recommended)
+- npm (usually comes with Node.js)
+- A modern web browser
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+## Installation
 
-## Project Setup
+To install the Vue 3 Windows Explorer-like Interface, follow these steps:
 
-```sh
+1. Clone the repository:
+```plaintext
+git clone [https://github.com/your-username/vue3-windows-explorer.git](https://github.com/your-username/vue3-windows-explorer.git)
+```
+
+2. Navigate to the project directory:
+```plaintext
+cd vue3-windows-explorer
+```
+
+3. Install the dependencies:
+```plaintext
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+## Usage
 
-```sh
+To run the application in development mode:
+
+```plaintext
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
+This will start the development server, typically at `http://localhost:5173` (the exact port may vary).
 
-```sh
+To build the application for production:
+
+```plaintext
 npm run build
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+This will generate a `dist` folder with the compiled assets, ready for deployment.
 
-```sh
-npm run lint
+## Project Structure
+
+src/
+├── components/
+│   ├── ExplorerUI.vue
+│   └── FolderTree.vue
+├── types/
+│   └── folder.ts
+├── App.vue
+└── main.ts
+
+
+- `ExplorerUI.vue`: Main component for the explorer interface
+- `FolderTree.vue`: Component for rendering the folder tree structure
+- `folder.ts`: TypeScript definitions for folder structures
+
+## Configuration
+
+The application expects a backend API to be available for fetching folder data. Update the `API_BASE_URL` in `src/components/ExplorerUI.vue` to point to your backend server:
+
+```typescript
+const API_BASE_URL = 'http://your-backend-url/api'
 ```
